@@ -18,4 +18,9 @@ dic_sue = {"name":"Sue Jones","age":47,"sal":1200000,"job":"manager"}
 
 db_01 = {"tom":dic_tom,"lily":dic_lily}
 db_01["sue"] = dic_sue;
-print(db_01)
+
+
+if __name__ == '__main__':
+    for key in db_01.keys():
+        print (key,'=>',db_01[key] )
+
