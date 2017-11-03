@@ -43,6 +43,13 @@ def storeDatabase(db,databasefilename = databasefilename):
 #loadDatabase ： 将文件中的数据load到内存中的数据库对象。
 def loadDatabase(databasefilename):
     dbfile = open(databasefilename,'r')
+    while True:
+        fileline = dbfile.readline()
+        if not fileline:
+            break
+
+
+
 
 
 if __name__ == '__main__':
