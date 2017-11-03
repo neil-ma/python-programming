@@ -1,19 +1,19 @@
-
 tom
-job => software
-age => 39sue
-job => manager
-age => 47
-name => Sue Jones
-sal => 1200000
-endrec.
 name => Tom White
+age => 39
 sal => 900000
+job => software
+endrec.
+sue
+name => Sue Jones
+age => 47
+sal => 1200000
+job => manager
 endrec.
 lily
-job => sale
-age => 21
 name => Lily Groove
+age => 21
 sal => 4000
+job => sale
 endrec.
 enddb.

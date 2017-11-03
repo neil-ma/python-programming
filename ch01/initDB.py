@@ -16,7 +16,9 @@ dic_tom = {"name":"Tom White","age":39,"sal":900000,"job":"software"}
 dic_lily = {"name":"Lily Groove","age":21,"sal":4000,"job":"sale"}
 dic_sue = {"name":"Sue Jones","age":47,"sal":1200000,"job":"manager"}
 
-db_01 = {"tom":dic_tom,"lily":dic_lily}
+db_01 = {}
+db_01["tom"]= dic_tom;
+db_01["lily"]=dic_lily;
 db_01["sue"] = dic_sue;
 
 
