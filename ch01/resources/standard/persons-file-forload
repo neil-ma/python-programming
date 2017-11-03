@@ -1,0 +1,19 @@
+Benzma
+sal => 40000000000000
+age => 35
+name => C Benzma
+job => sale
+endrec.
+Ronaldo
+sal => 120000000000000000000000000000
+age => 34
+name => CR7
+job => soccor
+endrec.
+tom
+sal => 900000
+age => 39
+name => Tom White
+job => software
+endrec.
+enddb.

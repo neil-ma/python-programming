@@ -27,8 +27,6 @@ db_01["tom"]= dic_tom;
 db_01["lily"]=dic_lily;
 db_01["sue"] = dic_sue;
 
-
-
 #storeDatabase : 将内存中的数据库 持久化到文件上
 def storeDatabase(db,databasefilename = databasefilename):
     dbfile=open(databasefilename,'w')
@@ -40,19 +38,35 @@ def storeDatabase(db,databasefilename = databasefilename):
     print(ENDDB,file=dbfile)
     dbfile.close()
 
+
 #loadDatabase ： 将文件中的数据load到内存中的数据库对象。
 def loadDatabase(databasefilename):
     dbfile = open(databasefilename,'r')
+    db_rec = {}
+    db = {}
+    personName = ""
     while True:
-        fileline = dbfile.readline()
+        fileline = dbfile.readline().replace('\n','')     #读一行数据
         if not fileline:
             break
-
-
-
-
+        if fileline != ENDRECORD and fileline != ENDDB:
+            if fileline.__contains__(SEPERATE):
+                (name,value)=fileline.split(SEPERATE)
+                db_rec[name] = value
+                #print (db_rec)
+            else:
+                personName = fileline
+        elif fileline == ENDDB:           #ENDDB 到了文件末尾，关闭文件句柄，返回db。
+            print("To the end of file!!")
+            dbfile.close()
+            return db
+        else:                #读到了 ENDRECORD  把这批字典加到db中去。
+            db[personName] = db_rec
 
 if __name__ == '__main__':
-    storeDatabase(db_01,databasefilename)
+    #storeDatabase(db_01,databasefilename)
+    loadDbFile = "resources/standard/persons-file-forload"
+    db  = loadDatabase(loadDbFile)
+    print(db)
 
 
