@@ -1,19 +1,19 @@
-lily
-sal => 4000
-age => 21
-name => Lily Groove
-job => sale
-endrec.
 sue
-sal => 1200000
-age => 47
 name => Sue Jones
+sal => 2700000.0
 job => manager
+age => 47
 endrec.
 tom
-sal => 900000
-age => 39
 name => Tom White
+sal => 2025000.0
 job => software
+age => 39
+endrec.
+lily
+name => Lily Groove
+sal => 9000.0
+job => sale
+age => 21
 endrec.
 enddb.

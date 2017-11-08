@@ -12,20 +12,13 @@
 @desc:  将内存的中一个DB（字典构成）落地成文件， 将一个文件读入内存。 格式可以参考 resources/standard 下的person-files
 '''
 
+from ch01.initDB import  db_01
+
 databasefilename = 'resources/standard/persons-file'
 ENDRECORD='endrec.'
 ENDDB='enddb.'
 SEPERATE='=>'
 
-
-dic_tom = {"name":"Tom White","age":39,"sal":900000,"job":"software"}
-dic_lily = {"name":"Lily Groove","age":21,"sal":4000,"job":"sale"}
-dic_sue = {"name":"Sue Jones","age":47,"sal":1200000,"job":"manager"}
-
-db_01 = {}
-db_01["tom"]= dic_tom;
-db_01["lily"]=dic_lily;
-db_01["sue"] = dic_sue;
 
 #storeDatabase : 将内存中的数据库 持久化到文件上
 def storeDatabase(db,databasefilename = databasefilename):
@@ -49,24 +42,29 @@ def loadDatabase(databasefilename):
         fileline = dbfile.readline().replace('\n','')     #读一行数据
         if not fileline:
             break
-        if fileline != ENDRECORD and fileline != ENDDB:
-            if fileline.__contains__(SEPERATE):
-                (name,value)=fileline.split(SEPERATE)
-                db_rec[name] = value
-                #print (db_rec)
-            else:
-                personName = fileline
-        elif fileline == ENDDB:           #ENDDB 到了文件末尾，关闭文件句柄，返回db。
-            print("To the end of file!!")
+        if fileline == ENDDB:
             dbfile.close()
             return db
-        else:                #读到了 ENDRECORD  把这批字典加到db中去。
+        elif fileline == ENDRECORD:
             db[personName] = db_rec
+            # 需要重新创建一个新的db_rec对象，之前的程序错误，没有这步，导致后边db的每一个key的value都改成了这个值（最后出现的值）：
+            #{'tom': {'age': '47', 'job': 'manager', 'sal': '1200000', 'name': 'Sue Jones'}, 'lily': {'age': '47', 'job': 'manager', 'sal': '1200000', 'name': 'Sue Jones'}, 'sue': {'age': '47', 'job': 'manager', 'sal': '1200000', 'name': 'Sue Jones'}}
+            #这也就表名，在字典的每一个value，虽然我们觉得保存的是当时的db_rec，实际上也是db_rec指向的一个对象，如果db_rec不重新初始化一个的话。会全部修改。
+            db_rec = {}
+        else:
+            if fileline.__contains__(SEPERATE):
+                (name_raw,value_raw)=fileline.split(SEPERATE)
+                # 生成的文件中有空格（print函数所致），例如： age => 21 ，如果从文件载入内存的字典，需要去空格
+                (name,value) = (name_raw.strip(),value_raw.strip())
+                db_rec[name] = value
+            else:
+                personName = fileline
+
 
 if __name__ == '__main__':
-    #storeDatabase(db_01,databasefilename)
-    loadDbFile = "resources/standard/persons-file-forload"
-    db  = loadDatabase(loadDbFile)
-    print(db)
+    storeDatabase(db_01,databasefilename)
+    # loadDbFile = "resources/standard/persons-file-forload"
+    # db  = loadDatabase(loadDbFile)
+    # print(db)
 
 

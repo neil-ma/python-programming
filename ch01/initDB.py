@@ -25,4 +25,6 @@ db_01["sue"] = dic_sue;
 if __name__ == '__main__':
     for key in db_01.keys():
         print (key,'=>',db_01[key] )
+    db_01["sue"] = dic_sue;
+    print (db_01)
 
