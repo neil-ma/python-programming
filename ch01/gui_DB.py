@@ -19,7 +19,8 @@
 
        (1) 函数simple_display展示了一个GUI的最简单的展示。
        (2) 函数button_trigger_fun演示，在点击一个按钮时，触发一个函数。
-            tkinter中，当创建新的空间时，容器要作为第一个参数传入，缺省时为主窗口。
+            tkinter中，当创建新的控件时，容器要作为第一个参数传入，缺省时为主窗口。
+       (3) “对GUI使用OOP” 把GUI程序编写成tkinter的Frame控件子类更常用。
 '''
 import shelve
 from tkinter import *
