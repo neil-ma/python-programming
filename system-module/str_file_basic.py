@@ -14,6 +14,11 @@
        find，replace，in，strip,lower,isalpha,split,join
         Python不会自动将字符串转换为整型，反之亦然。需要自己转换
 
+       (2)file_test(),open方法返回文件对象，该对象是python的核心。
+        文件对象的read()方法，读取文件中的内容。 read()方法读出的部分，就不在文件对象中了。下边的测试。如果str1 执行读出文件所有的内容
+        后边的几个字符串就是空值了。
+        写文件的方法，参考 ch01/makeDB_file.py
+
 '''
 
 def str_method_test():
@@ -52,7 +57,21 @@ def str_method_test():
     # int -> str       str , repr
     print(str(42)+'a',repr(43)+'3')
 
+def file_test():
+    file = open("resources/apache_log")
 
+    #将后边N个字节读取为字符串
+    str1 = file.read(5)
+    #跨过换行读取下一行
+    str2 = file.readline()
+    #将整个文件读取为单行字符串组成的列表
+    str3 = file.readlines()
+    # 将整个文件读取为字符串
+    str4 = file.read()
+
+    print(str1,str2,str3,str4)
+    file.close()
 
 if __name__ == '__main__':
-    str_method_test()
+    # str_method_test()
+    file_test()
