@@ -56,3 +56,5 @@ text = os.popen("type resources/apache_log").read()
 print(text)
 ls = os.popen("dir .").readlines()
 print(ls)
+
+#subprocess 模块可以实现与os.system,os.popen相同功能，但是代码更加复杂，但是对流的连接和使用提供更完整控制。
