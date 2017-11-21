@@ -11,6 +11,7 @@
 
 @desc:   (1)os.path的常用的方法
          (2) 在脚本中运行 shell （Linux shell / Windows BatchCommand ）
+            os.system： 在python脚本中运行shell命令；os.popen ： 运行命令并且与其输入/输出流相连。
 '''
 import os
 
@@ -43,3 +44,15 @@ print("os.path.basename =>" , os.path.basename(file_abs_path))
 #如果路径需要混用windows和linux，可以使用os.path.normpath ；
 print("os.path.normpath =>" , os.path.normpath(file_abs_path))
 print("os.path.abspath =>" , os.path.abspath(r"resources\apache_log"))
+
+# 末尾的返回值0表示，命令已经成功执行了。 os.system，直接调用shell命令。
+def shell_dispose():
+    os.system('dir .')
+    os.system('type __init__.py')
+
+#os.popen除了可以执行shell命令外，还可以连接到命令的标准输入/输出流。
+# os.popen("shell") 将返回一个类似文件的对象。默认与输出流相连，如果提供参数'w'，则与输入流相连。
+text = os.popen("type resources/apache_log").read()
+print(text)
+ls = os.popen("dir .").readlines()
+print(ls)
