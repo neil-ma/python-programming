@@ -18,4 +18,3 @@ print(os.pathsep,os.sep,os.pardir,os.curdir,os.linesep)
 
 #os.path提供了一整套目录处理的工具。包括os.path.isfile,os.path.isdir,os.path.exists,os,path.getsize
 print(os.path.isfile(r'C:\Users'),os.path.isdir(r'C:\Users'),os.path.exists(r'C:\Users'),os.path.getsize(r'C:\Users') )
-
