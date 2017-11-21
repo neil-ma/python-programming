@@ -13,7 +13,7 @@
          (2) 在脚本中运行 shell （Linux shell / Windows BatchCommand ）
             os.system： 在python脚本中运行shell命令；os.popen ： 运行命令并且与其输入/输出流相连。
 '''
-import os
+import os,subprocess
 
 def os_info():
     #获得进程号
@@ -52,9 +52,23 @@ def shell_dispose():
 
 #os.popen除了可以执行shell命令外，还可以连接到命令的标准输入/输出流。
 # os.popen("shell") 将返回一个类似文件的对象。默认与输出流相连，如果提供参数'w'，则与输入流相连。
-text = os.popen("type resources/apache_log").read()
-print(text)
-ls = os.popen("dir .").readlines()
-print(ls)
+def shell_get_stdout():
+    text = os.popen("type resources/apache_log").read()
+    print(text)
+    ls = os.popen("dir .").readlines()
+    print(ls)
+
 
 #subprocess 模块可以实现与os.system,os.popen相同功能，但是代码更加复杂，但是对流的连接和使用提供更完整控制。
+#subprocess的 call方法与os.system功能差不多。但是在执行 Windows下的shell内建命令需要额外协议（例如type）  If shell is True, the specified command will be executed through the shell.
+#在Unix平台，当shell设置为False时，程序命令行由os.execvp运行。在Windows下，需要将shell=True传给call，这样能够运行shell内建命令。
+# To support a wide variety of use cases    使用popen方法
+def sub_process_using():
+    text = subprocess.call('type sys_module.py', shell=True)
+    print(text)
+    popen_case = subprocess.Popen('type sys_module.py', shell=True, stdout=subprocess.PIPE)
+    # communicate执行命令  如果不用commnicate，直接使用popen_case.stdout.read()也可以，将标准输出读出。
+    print(popen_case.communicate())
+    # print(popen_case.stdout.read())
+    print(popen_case.returncode)
+
