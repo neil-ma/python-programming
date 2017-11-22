@@ -63,6 +63,8 @@ def shell_get_stdout():
 #subprocess的 call方法与os.system功能差不多。但是在执行 Windows下的shell内建命令需要额外协议（例如type）  If shell is True, the specified command will be executed through the shell.
 #在Unix平台，当shell设置为False时，程序命令行由os.execvp运行。在Windows下，需要将shell=True传给call，这样能够运行shell内建命令。
 # To support a wide variety of use cases    使用popen方法
+# 将Python文件作为程序运行和导入程序文件来使用其中的函数是截然不同的做法，一般后者要比前者快。
+# os.startfile是新增的一个函数，这个函数会打开一个文件，就像是用鼠标单击其图标一样。
 def sub_process_using():
     text = subprocess.call('type sys_module.py', shell=True)
     print(text)
@@ -71,4 +73,7 @@ def sub_process_using():
     print(popen_case.communicate())
     # print(popen_case.stdout.read())
     print(popen_case.returncode)
+    os.startfile(r'D:\Program\sts-3.9.1.RELEASE\STS')
 
+if __name__ == '__main__':
+    sub_process_using()
