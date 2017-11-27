@@ -12,6 +12,8 @@
 @desc: 命令行参数
     （1） 以字典key-value形式返回，命令行参数。 例如 -i oits  字典中增加 {'-i','oits'}
         地板除法： 除法不管操作数为何种数值类型，总是会舍去小数部分   //
+
+    (2) python提供的关于参数读取的2个模块，getopt ， optparse
 '''
 import sys
 

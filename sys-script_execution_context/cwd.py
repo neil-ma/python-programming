@@ -22,4 +22,5 @@ def whereami_test():
 
 
 if __name__ == '__main__':
-    whereami_test()
+    # whereami_test()
+    print("父进程调用：",os.environ['USERNAME'])
