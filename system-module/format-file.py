@@ -28,22 +28,17 @@ def module_test():
     print(sys.__doc__)
     help(sys)
 
-# def more(text,line_num=15):
-#     lines = text.splitlines()
-#     while True:
-#         display_lines = lines[:line_num]
-#         other_lines = lines[line_num:]
-#         if len(display_lines) > 0 :
-#             print(display_lines)
-#         if len(display_lines) > 0 and input("continue? [y/n]") == 'y':
-#             lines = other_lines
-#         else:
-#             break
-
-# 优雅的实现方式：
 def more(text,line_num=15):
     lines = text.splitlines()
-
+    while True:
+        display_lines = lines[:line_num]
+        other_lines = lines[line_num:]
+        if len(display_lines) > 0 :
+            print(display_lines)
+        if len(display_lines) > 0 and input("continue? [y/n]") == 'y':
+            lines = other_lines
+        else:
+            break
 
 def string_method_testing():
     return ""
