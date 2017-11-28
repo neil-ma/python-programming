@@ -49,8 +49,10 @@ def sorter():
 def adder():
     sum = 0
     while True:
-        try:data = input()
-        except:break
+        # try:data = input()             # 最基本的实现方式，通过input()获取输入。
+        data=sys.stdin.readline()        # input()也是输入流接口，所以使用stdin.readline()也可以逐行处理。 使用stdin.readline()不用担心处理异常，
+                                         # 因为数据在stdin文件对象中，不会遇到 EOFError: EOF when reading a line
+        # except:break
         if data:
             sum += int(data)
         else:
@@ -58,5 +60,12 @@ def adder():
     print(sum,end='')
     return sum
 
+# 使用在file对象上迭代的方式。在file对象上迭代，for循环每次自动抓取一行。
+def adder_senior():
+    sum = 0
+    for line in sys.stdin: sum += int(line)      # 直接int sys.stdin的迭代即可。
+    print(sum,end='')
+    return sum
+
 if __name__ == '__main__':
-    adder()
+    adder_senior()
