@@ -20,6 +20,7 @@
         (3) test_pipe():  通过管道连接程序：
             命令行执行：python norm_stream.py < resources\\teststream-input.txt | more
         (4) sorter()和adder()是自实现的2个函数，可以通过管道多次传送。
+
 '''
 import sys
 
