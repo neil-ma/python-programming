@@ -21,11 +21,13 @@
 
         (3) print调用中的重定向。
 
-        (4) os.popen和子进程重定向  ： 效果类似shell的重定向流到程序的命令行管道语法。对脚本所启动程序的流进行重定向，而非重定向脚本本身的流。
+        (4) popen_subprocess_re() ：
+            os.popen和子进程重定向  ： 效果类似shell的重定向流到程序的命令行管道语法。对脚本所启动程序的流进行重定向，而非重定向脚本本身的流。
+            通过传入不同的模式标志，可以在调用的脚本中重定向一个 子程序的输入或输出流到文件。
         A. class subprocess.Popen  : Execute a child program in a new process.
-        B. os.popen : Open a pipe to or from command cmd. The return value is an open file object connected to the pipe, which can be read or written depending on whether mode is 'r' (default) or 'w'. 
+        B. os.popen : Open a pipe to or from command cmd. The return value is an open file object connected to the pipe, which can be read or written depending on whether mode is 'r' (default) or 'w'.
 '''
-import io,sys
+import io,sys,os
 
 class Output():
     """
@@ -70,7 +72,25 @@ def print_re():
     # print正常定向 stdout
     print(buff.getvalue())
 
+def popen_subprocess_re():
+    inp = input()
+    # 文件对象直接write，写入文件
+    open("resources\\file_re.txt",'w').write("Hello " + inp +"!\n")
+
+    # os.popen执行时，默认的模式是'r'，也就是标准输出。如果修改模式'r'为'w'就会变为标准输入了。
+    pipe = os.popen("type writer.py")
+    print(pipe.read())
+    print(pipe.close())
+
+    # 输入流由 pipe.write()来写入。
+    pipe1 = os.popen("python hello-in.py","w")
+    pipe1.write("Glums")
+    pipe1.close()
+
+
+
 if __name__ == '__main__':
     # stringio_testing()
     # stringio_re_stdout()
-    print_re()
+    # print_re()
+    popen_subprocess_re()
