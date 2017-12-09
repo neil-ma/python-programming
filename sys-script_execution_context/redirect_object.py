@@ -27,7 +27,7 @@
         A. class subprocess.Popen  : Execute a child program in a new process.
         B. os.popen : Open a pipe to or from command cmd. The return value is an open file object connected to the pipe, which can be read or written depending on whether mode is 'r' (default) or 'w'.
 '''
-import io,sys,os
+import io,sys,os,subprocess
 
 class Output():
     """
@@ -72,7 +72,7 @@ def print_re():
     # print正常定向 stdout
     print(buff.getvalue())
 
-def popen_subprocess_re():
+def popen_re():
     inp = input()
     # 文件对象直接write，写入文件
     open("resources\\file_re.txt",'w').write("Hello " + inp +"!\n")
@@ -87,10 +87,33 @@ def popen_subprocess_re():
     pipe1.write("Glums")
     pipe1.close()
 
+def subprocess_re():
+    #使用subprocess，可以使用2种方法来调用 subprocess.call() , subprocess.Popen
+    # (1) call方法
+    X = subprocess.call("python cwd.py")
+    print(X)
+    # (2) subprocess.Popen  commnicate方式
+    #  Popen.communicate  :Interact with process: Send data to stdin. Read data from stdout and stderr, until end-of-file is reached.
+    # communicate() returns a tuple (stdout_data, stderr_data).
+    pipe = subprocess.Popen("python cwd.py",stdout=subprocess.PIPE)
+    print("communicate()方式：",pipe.communicate())
+    # (3) subprocess.Popen  read方式
+    pipe2 = subprocess.Popen("python cwd.py", stdout=subprocess.PIPE)
+    print("pipe.stdout.read()方式：",pipe2.stdout.read())
+    #退出状态。  Wait for child process to terminate. Set and return returncode attribute.
+    print("pipe.stdout.read()方式：",pipe2.wait())
+
+    #(4) 提供输入参数：
+    pipe3 = subprocess.Popen("python hello-in.py", stdin=subprocess.PIPE)
+    pipe3.stdin.write(b"IBM")
+    pipe3.stdin.close()
+    pipe3.wait()
+
 
 
 if __name__ == '__main__':
     # stringio_testing()
     # stringio_re_stdout()
     # print_re()
-    popen_subprocess_re()
+    # popen_re()
+    subprocess_re()
