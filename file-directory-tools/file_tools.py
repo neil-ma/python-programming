@@ -26,9 +26,18 @@
             缓存策略 ： 控制文件的缓冲，数据在传输之前的队列方式，以便提高性能。 0: 无缓冲，数据立即传输，只允许在二进制下进行。1：逐行缓冲。其他正值表示全缓冲（默认值）
 
        (5) 二进制和文本文件：
-        
+       python把文本模式文件当做unicode来处理，并自动在输入时对文件解码，在输出时，对文件编码。
+        >>> open('file-directory-tools\\resources\\data_file_4read').read()
+        'Hadoop\nSolr\nHive\nHbase\nKafka'
+        >>> open('file-directory-tools\\resources\\data_file_4read','rb').read()
+        b'Hadoop\r\nSolr\r\nHive\r\nHbase\r\nKafka'
+
+        (6) struct模块：
+        struct模块用于打包和解压二进制数据的调用。
 
 '''
+
+import struct
 
 def close_file():
     #传统异常处理器模式，来保证文件对象关闭。常用方法
@@ -72,8 +81,21 @@ def other_open_options():
     file_append.write("AloneSo")
     file_append.close()
 
+def bin_parse_pack():
+    #pack的第一个参数是，进行pack和unpack的format string，详细内容参考mannul。
+    data =struct.pack('hhl', 1, 2, 3)
+    file = open("resources\\bin.txt",'wb')
+    file.write(data)
+    file.close()
+
+    data_text = open("resources\\bin.txt").read()
+    data_bin = open("resources\\bin.txt","rb").read()
+    data_unpact = struct.unpack('hhl',data_bin)
+    print("文本读取内容：",data_text)
+    print("二进制unpack后读取：",data_unpact)
 
 if __name__ == "__main__":
     # close_file()
     # read_files()
-    other_open_options()
+    # other_open_options()
+    bin_parse_pack()
