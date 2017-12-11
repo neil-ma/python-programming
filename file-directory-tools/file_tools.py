@@ -32,8 +32,11 @@
         >>> open('file-directory-tools\\resources\\data_file_4read','rb').read()
         b'Hadoop\r\nSolr\r\nHive\r\nHbase\r\nKafka'
 
-        (6) struct模块：
+        (6) bin_parse_pack(): struct模块：
         struct模块用于打包和解压二进制数据的调用。
+
+        (7) random_access():  文件的随机读取：
+         因为文本文件需要unicode编码解码，所以，二进制文件更加适合于随机读取，使用 file.seek()来定位。
 
 '''
 
@@ -82,7 +85,8 @@ def other_open_options():
     file_append.close()
 
 def bin_parse_pack():
-    #pack的第一个参数是，进行pack和unpack的format string，详细内容参考mannul。
+    #使用struct模块来打包和解析二进制文件
+    # pack的第一个参数是，进行pack和unpack的format string，详细内容参考mannul。
     data =struct.pack('hhl', 1, 2, 3)
     file = open("resources\\bin.txt",'wb')
     file.write(data)
@@ -94,8 +98,27 @@ def bin_parse_pack():
     print("文本读取内容：",data_text)
     print("二进制unpack后读取：",data_unpact)
 
+def random_access():
+    file = open("resources\\random_access.bin","w+b")
+    test_str = b'spam'
+    w1 = b'X' * 8
+    w2 = b'Y' * 8
+    data = b''
+    for c in test_str: data += bytes([c])*8
+    file.write(data)
+    file.seek(0)
+    print("初始化字符读取：",file.read())
+    file.seek(0)
+    file.write(w1)
+    # 写入是覆盖写，会覆盖之前开头的8个s。注意变化。
+    file.seek(0);print("开头写入8个X：",file.read())
+    # seek(16) 是从文件"绝对开始"的位置起，向后位移16位。
+    file.seek(len(w1)*2);file.write(w2)
+    file.seek(0);print("从第3个字节开始写入8个Y：",file.read())
+
 if __name__ == "__main__":
     # close_file()
     # read_files()
     # other_open_options()
-    bin_parse_pack()
+    # bin_parse_pack()
+    random_access()
