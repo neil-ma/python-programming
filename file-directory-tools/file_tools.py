@@ -38,9 +38,20 @@
         (7) random_access():  文件的随机读取：
          因为文本文件需要unicode编码解码，所以，二进制文件更加适合于随机读取，使用 file.seek()来定位。
 
+        (8) os模块中的底层文件工具，
+        相比于open()工具，os中基于描述符的文件工具更低层且更复杂，一般情况下还是使用open()更多，os.open()少得多。
+        I. fileno()
+        文件对象方法fileno返回的整数描述符是与某个内建文件对象想关联的。 sys.stdin 0 ; sys.stdout 1; sys.stderr 2
+        fileno() 方法返回一个整型的文件描述符(file descriptor FD 整型)，可用于底层操作系统的 I/O 操作。
+        II. fdopen()把文件描述符封装进文件对象。
+
+        (9)其他os模块文件工具。
+        os.rename()重命名文件; os.remove()删除文件; os.chown()修改文件所有者 ; os.chmod()修改文件权限。
+        os.stat()返回一个数值组成的元组（关于文件的底层信息，一般os.stat()比较少用），
+
 '''
 
-import struct
+import struct,os,sys
 
 def close_file():
     #传统异常处理器模式，来保证文件对象关闭。常用方法
@@ -116,9 +127,75 @@ def random_access():
     file.seek(len(w1)*2);file.write(w2)
     file.seek(0);print("从第3个字节开始写入8个Y：",file.read())
 
+def os_file():
+    #sys.stdin, sys.stdout, sys.stderr 对应的整数描述符
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        print(stream.fileno())
+
+    sys.stdout.write("Hello sys stdout!!!\n")
+    #fd=1代表stdout， os.write第二个参数必须是bytes
+    os.write(1,b"os.write(): Hello sys stdout!!!\n")
+
+    # os模块为文件处理提供了更多底层控制。
+    file_os = open("resources\\os_file.txt",'w')
+    #获得文件描述符  3
+    fd = file_os.fileno()
+    os.write(fd,b'insert with os.write(fd,str)!!')
+    file_os.flush()
+    file_os.close()
+
+    #相比于内建的open，更加灵活。 以 读-写 或者 二进制模式打开一个基于描述符的文件。
+    file_os_open = os.open("resources\\data_file_4read",(os.O_RDWR | os.O_BINARY))
+    print(os.read(file_os_open,10))
+    #os.lseek(fd, pos, how)   how参数 0：从头开始偏移  1：从当前位置偏移  2：相对于文件尾部偏移。
+    #回到首部
+    os.lseek(file_os_open,0,0)
+    print(os.read(file_os_open, 50))
+
+    os.lseek(file_os_open, 0, 0)
+    os.write(file_os_open,b'HELLO')
+
+    #把文件描述符封装进文件对象。
+    file_os_obj =os.open("resources\\data_file_4read",(os.O_RDWR | os.O_BINARY))  #file_os_obj=3
+    objfile = os.fdopen(file_os_obj,'rb')
+    print(objfile.read(100))
+    objfile.close()
+    #在文本模式下，读取和写入将执行unicode编码和换行符转换。
+    file_os_obj1 = os.open("resources\\data_file_4read", (os.O_RDWR | os.O_BINARY))  # file_os_obj1=3
+    objfile1 = os.fdopen(file_os_obj1, 'r')
+    print(objfile1.read(100))
+    objfile1.close()
+    #当然是用内建的open()函数来封装文件描述符也是完全可以的。
+    file_os_obj2 = os.open("resources\\data_file_4read", (os.O_RDWR | os.O_BINARY))  # file_os_obj2=3
+    objfile2=open(file_os_obj2,'r')
+    print(objfile2.read())
+    objfile2.close()
+
+def os_tools():
+    #创建测试文件
+    file = open("resources\\file_test",'w')
+    file.write("hello niu")
+    file.close()
+    os.rename("resources\\file_test","resources\\file_test.txt")
+    #删除文件
+    os.remove("resources\\file_test.txt")
+    info = os.stat("resources\\file_test.txt")
+    #os.stat_result(st_mode=33206, st_ino=18014398509669407, st_dev=4068484812, st_nlink=1, st_uid=0, st_gid=0, st_size=9, st_atime=1513154972, st_mtime=1513154972, st_ctime=1513154972)
+    print(info)
+    print(info.st_mode,info.st_size)
+    import stat
+    print(info[stat.ST_MODE],info[stat.ST_SIZE])
+    print("stat模块方法：",stat.S_ISDIR(info[stat.ST_MODE]),stat.S_ISREG(info[stat.ST_MODE]))
+    # 替代os.stat的方式， os.path模块就可以完成
+    path = "resources\\file_test.txt"
+    print("os.path模块方法：",os.path.isdir(path),os.path.isfile(path),os.path.getsize(path))
+
+
 if __name__ == "__main__":
     # close_file()
     # read_files()
     # other_open_options()
     # bin_parse_pack()
-    random_access()
+    # random_access()
+    # os_file()
+    os_tools()
